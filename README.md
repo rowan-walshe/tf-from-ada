@@ -6,7 +6,7 @@ This "worked", though there is still lots to do:
 1. Load and execute in different steps
 1. Add function to tokenise text
 1. Use this function and remove currently hardcoded example
-1. Figure out how to link to TF staticly, to make distribution easier
+1. Figure out how to link to TF statically, to make distribution easier
 1. Create devcontainer that contains pre-built TF, protobuf and other deps
 1. Test inference time on various GPUs and CPUs
 
@@ -27,4 +27,4 @@ This "worked", though there is still lots to do:
 
 ## Notes
 
-It currently takes about 300ms to load the model, but inference takes (some different small amount of time that I haven't measured). My hope is that by splitting the loading and inference functions, inference will take a neglicable amount of time. Though I'm not sure if this is a pipe dream when running on a CPU though...
+It currently takes about 300ms to load the model, but inference takes (some different small amount of time that I haven't measured). My hope is that by splitting the loading and inference functions, inference will take a negligible amount of time. Though I'm not sure if this is a pipe dream when running on a CPU though...
