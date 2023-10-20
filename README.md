@@ -1,6 +1,6 @@
 # AI Model from Ada
 
-Tets calling TensorFlow (TF) model from Ada (using bindings to C++).
+Tests calling TensorFlow (TF) model from Ada (using bindings to C++).
 
 This "worked", though there is still lots to do:
 1. Load and execute in different steps
@@ -27,4 +27,4 @@ This "worked", though there is still lots to do:
 
 ## Notes
 
-It currently takes about 300ms to load the model, but inference takes (some different small ammount of time that I haven't measured). My hope is that by splitting the loading and inference functions, inference will take a neglicable ammount of time. Though I'm not sure if this is a pipe dream when running on a CPU though...
+It currently takes about 300ms to load the model, but inference takes (some different small amount of time that I haven't measured). My hope is that by splitting the loading and inference functions, inference will take a neglicable amount of time. Though I'm not sure if this is a pipe dream when running on a CPU though...
