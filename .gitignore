@@ -1,0 +1,11 @@
+/obj/
+/bin/
+/alire/
+/config/
+
+/model/*
+/cpp_test/build/
+
+# Dirs used for building some deps
+/protobuf*/
+/tensorflow/
