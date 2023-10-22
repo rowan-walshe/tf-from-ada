@@ -40,5 +40,8 @@ This "worked", though there is still lots to do:
 
 It currently takes about 300ms to load the model, but inference takes (some different small amount of time that I haven't measured). My hope is that by splitting the loading and inference functions, inference will take a negligible amount of time. Though I'm not sure if this is a pipe dream when running on a CPU though...
 
+To enable it to find libstdc++:
+`export LD_LIBRARY_PATH=/root/.config/alire/cache/dependencies/gnat_native_13.2.1_788a01f9/lib64:$LD_LIBRARY_PATH`
+
 ## Useful links
 https://iq.opengenus.org/build-tensorflow-cpp-library/

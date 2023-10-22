@@ -1,7 +1,7 @@
 with "config/ai_model_from_ada_config.gpr";
 project Ai_Model_From_Ada is
 
-   for Source_Dirs use ("src/", "config/", "/opt/tensorflow/lib/include/", "/usr/local/include");
+   for Source_Dirs use ("src/", "config/", "/usr/local/include");
    for Object_Dir use "obj/" & Ai_Model_From_Ada_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "bin";
@@ -13,7 +13,7 @@ project Ai_Model_From_Ada is
    end Compiler;
 
    package Linker is
-      for Default_Switches ("Ada") use ("-L/opt/tensorflow/lib", "-lprotobuf", "-ltensorflow", "-ltensorflow_framework");
+      for Default_Switches ("Ada") use ("-L/opt/tensorflow/lib", "-ltensorflow", "-ltensorflow_framework");
    end Linker;
 
    package Binder is
