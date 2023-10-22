@@ -25,6 +25,20 @@ This "worked", though there is still lots to do:
 1. Run alr build/alr run
 1. Watch how using the magic of AI, it is able to predict that the hard coded example should have a indentation of 3 on the next line
 
+## Steps to build tensorflow
+1. Grab TF sources from GitHub (tested with 2.14 https://github.com/tensorflow/tensorflow/releases/tag/v2.14.0)
+1. `cd tensorflow`
+1. `./configure` (and select sensible options)
+1. `bazel build //tensorflow:libtensorflow.so //tensorflow:libtensorflow_cc.so //tensorflow:install_headers`
+1. `mkidr -p /opt/tensorflow/lib`
+1. `cp -d bazel-bin/tensorflow/*.so* /opt/tensorflow/lib/`
+1. `cp -r bazel-bin/tensorflow/include /opt/tensorflow`
+1. `cp -r /opt/tensorflow/include/src/* /opt/tensorflow/include`
+1. `export LD_LIBRARY_PATH=/opt/tensorflow/lib:$LD_LIBRARY_PATH`
+
 ## Notes
 
 It currently takes about 300ms to load the model, but inference takes (some different small amount of time that I haven't measured). My hope is that by splitting the loading and inference functions, inference will take a negligible amount of time. Though I'm not sure if this is a pipe dream when running on a CPU though...
+
+## Useful links
+https://iq.opengenus.org/build-tensorflow-cpp-library/
