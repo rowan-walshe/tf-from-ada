@@ -5,7 +5,7 @@ package Tokenizer is
    type Query_T is array (Count_T) of Token_T;
 
    Padding : Token_T := Token_T'First;
-   Unknown : Token_T := Token_T'Last;
+   Unknown : Token_T := Token_T'Last - 1;
 
    function Encode (Text : String) return Query_T;
    --  Tokenize Text
