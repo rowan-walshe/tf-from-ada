@@ -9,3 +9,4 @@
 # Dirs used for building some deps
 /protobuf*/
 /tensorflow/
+/tensorflow-bin/

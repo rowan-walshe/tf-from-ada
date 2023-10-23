@@ -43,5 +43,8 @@ It currently takes about 300ms to load the model, but inference takes (some diff
 To enable it to find libstdc++:
 `export LD_LIBRARY_PATH=/root/.config/alire/cache/dependencies/gnat_native_13.2.1_788a01f9/lib64:$LD_LIBRARY_PATH`
 
+To disable TF debug info:
+`export TF_CPP_MIN_LOG_LEVEL=3`
+
 ## Useful links
 https://iq.opengenus.org/build-tensorflow-cpp-library/
