@@ -16,7 +16,7 @@ This "worked", though there is still lots to do:
 1. Grab TF sources from GitHub (tested with 2.14 https://github.com/tensorflow/tensorflow/releases/tag/v2.14.0)
 1. Build TF using bazel (and some args I can't remember)
 1. Go for a walk while your computer spends the next hour building TF...
-1. Install built libraries (I moved things to /opt/tensorflow)
+1. Install built libraries (I moved things to /usr/local/(lib|include))
 1. Grab protobuf v3.21.9 from GitHub (https://github.com/protocolbuffers/protobuf/archive/refs/tags/v3.21.9.tar.gz)
 1. Build and install protobuf
 1. Train TF model (done using https://github.com/rowan-walshe/ai-indent/tree/feature/Train-model)
@@ -30,18 +30,17 @@ This "worked", though there is still lots to do:
 1. `cd tensorflow`
 1. `./configure` (and select sensible options)
 1. `bazel build //tensorflow:libtensorflow.so //tensorflow:libtensorflow_cc.so //tensorflow:install_headers`
-1. `mkidr -p /opt/tensorflow/lib`
-1. `cp -d bazel-bin/tensorflow/*.so* /opt/tensorflow/lib/`
-1. `cp -r bazel-bin/tensorflow/include /opt/tensorflow`
-1. `cp -r /opt/tensorflow/include/src/* /opt/tensorflow/include`
-1. `export LD_LIBRARY_PATH=/opt/tensorflow/lib:$LD_LIBRARY_PATH`
+1. `cp -d bazel-bin/tensorflow/*.so* /usr/local/lib/`
+1. `cp -r bazel-bin/tensorflow/include /usr/local/include`
+1. `cp -r /usr/local/include/src/* /usr/local/include`
+1. `export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH`
 
 ## Notes
 
 It currently takes about 300ms to load the model, but inference takes (some different small amount of time that I haven't measured). My hope is that by splitting the loading and inference functions, inference will take a negligible amount of time. Though I'm not sure if this is a pipe dream when running on a CPU though...
 
 To enable it to find libstdc++:
-`export LD_LIBRARY_PATH=/root/.config/alire/cache/dependencies/gnat_native_13.2.1_788a01f9/lib64:$LD_LIBRARY_PATH`
+`export LD_LIBRARY_PATH=/home/rowan/.cache/alire/dependencies/gnat_native_13.2.1_788a01f9/lib64:$LD_LIBRARY_PATH`
 
 To disable TF debug info:
 `export TF_CPP_MIN_LOG_LEVEL=3`

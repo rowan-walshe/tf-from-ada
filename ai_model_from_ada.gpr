@@ -13,7 +13,7 @@ project Ai_Model_From_Ada is
    end Compiler;
 
    package Linker is
-      for Default_Switches ("Ada") use ("-L/opt/tensorflow/lib", "-ltensorflow", "-ltensorflow_framework");
+      for Default_Switches ("Ada") use ("-ltensorflow", "-ltensorflow_framework");
    end Linker;
 
    package Binder is

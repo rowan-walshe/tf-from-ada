@@ -9,7 +9,7 @@ void* loadModel() {
     tensorflow::SessionOptions session_options;
     tensorflow::RunOptions run_options;
     tensorflow::Status status = tensorflow::LoadSavedModel(
-        session_options, run_options, "/workspaces/ai_model_from_ada/model", {"serve"}, bundle);
+        session_options, run_options, "/home/rowan/model", {"serve"}, bundle);
 
     if (!status.ok()) {
         std::cerr << "Failed to load model: " << status << "\n";
