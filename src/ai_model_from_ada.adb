@@ -1,3 +1,4 @@
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Text_IO;
 --  with Ada.Calendar; use Ada.Calendar;
 --  with Interfaces.C; use Interfaces.C;
@@ -31,12 +32,14 @@ procedure Ai_Model_From_Ada is
    --  Start_Time, End_Time : Time;
    --  Total : Duration;
 
-   Test : constant String := "with Ada.Text_IO; use Ada.Text_IO;";
+   --  Test : constant String := "with Ada.Text_IO; use Ada.Text_IO;";
+   Test : constant String := "   function Decode_Token (Token : Token_T) return String is" & LF & "      --  Some comment describing the function" & LF & "      Log : Foo.String := ""Abcd""""ef"";" & LF & "   begin" & LF & "      Put_Line (Log);" & LF & "      return Token_Lookup (Token);" & LF & "   end Decode_Token;" & LF;
    Tokens : constant Query_T := Encode (Test);
 begin
+   Ada.Text_IO.Put_Line ("Original: " & Test);
    Ada.Text_IO.Put_Line ("Tokens: " & Tokens'Image);
-   --  Ada.Text_IO.Put_Line ("Match: " & GNAT.Regexp.Match (Test, Pat_1)'Image);
-   --  Ada.Text_IO.Put_Line ("Match: " & GNAT.Regexp.Match (Test, Pat_2)'Image);
+   Ada.Text_IO.Put_Line ("Decoded: " & LF & Decode (Tokens));
+
    --  for J in 1 .. 10 loop
    --     Start_Time := Clock;
    --     Indent := runModel (Model, Generate_Random_Query);

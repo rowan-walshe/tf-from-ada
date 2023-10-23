@@ -1,4 +1,7 @@
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers.Vectors;
+with Ada.Containers.Indefinite_Vectors;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Regpat; use GNAT.Regpat;
 
 with Ada.Text_IO; use Ada.Text_IO;
@@ -13,6 +16,13 @@ package body Tokenizer is
    use Token_Vectors;
 
    --  Pat_Word : constant Pattern_Matcher := Compile ("^\w*\b");
+
+   package String_Vectors is new Ada.Containers.Indefinite_Vectors
+     (Index_Type   => Natural,
+      Element_Type => String);
+    use type String_Vectors.Vector;
+
+   Token_Lookup : String_Vectors.Vector := String_Vectors.Empty_Vector & ""  & "" & " " & ("" & LF) & "-- A comment" & "." & "abort" & "else" & "new" & "return" & "elsif" & "not" & "reverse" & "abstract" & "end" & "null" & "accept" & "entry" & "select" & "access" & "exception" & "of" & "separate" & "aliased" & "exit" & "some" & "all" & "others" & "subtype" & "and" & "for" & "out" & "synchronized" & "array" & "function" & "overriding" & "at" & "tagged" & "generic" & "package" & "task" & "begin" & "goto" & "pragma" & "terminate" & "body" & "private" & "then" & "if" & "procedure" & "type" & "case" & "in" & "protected" & "constant" & "interface" & "until" & "is" & "raise" & "use" & "declare" & "range" & "delay" & "limited" & "record" & "when" & "delta" & "loop" & "rem" & "while" & "digits" & "renames" & "with" & "do" & "mod" & "requeue" & "xor" & "abs" & "or" & "=>" & "(" & ")" & "'" & ">=" & "<=" & "/=" & ">" & "<" & ":=" & "=" & "+" & "-" & "*" & "/" & "**" & "&" & "," & ";" & ":" & "[" & "]" & "#";
 
    Pat_001 : constant Pattern_Matcher := Compile ("^""(""""|[^""\n])*""");  --  Match a string
    Pat_002 : constant Pattern_Matcher := Compile ("^ ");
@@ -536,24 +546,33 @@ package body Tokenizer is
       --     return ()
       --     Current := Matches (0).Last + 1;
       --     for I in Matches (0).First .. Matches (0).Last loop
-      --        Buffer.Append (Unknown);
+      --        Buffer.Append (Unk_Tok);
       --     end loop;
       --  else
-      return (Unknown, 1);
+      return (Unk_Tok, 1);
    end Next_Token;
 
    function Encode (Text : String) return Query_T is
       Current : Integer := Text'First;
       Buffer : Token_Vectors.Vector;
-      Result : Query_T := [others => Padding];
+      Result : Query_T := [others => Pad_Tok];
       Offset : Integer;
       Consumed : Consume_T;
+      Matches : Match_Array (0 .. 0);
    begin
       while Current <= Text'Last loop
-         --  TODO loop over expected token matchers
-         Consumed := Next_Token (Text (Current .. Text'Last));
-         Buffer.Append (Consumed.Token);
-         Current := Current + Consumed.Offset;
+         --  Special behaviour for string match
+         Match (Pat_001, Text (Current .. Text'Last), Matches);
+         if Matches (0) /= No_Match then
+            Current := @ + Get_Offset (Matches (0));
+            for I in Matches (0).First .. Matches (0).Last loop
+               Buffer.Append (Str_Tok);
+            end loop;
+         else
+            Consumed := Next_Token (Text (Current .. Text'Last));
+            Buffer.Append (Consumed.Token);
+            Current := @ + Consumed.Offset;
+         end if;
       end loop;
 
       --  Move Tokens from Buffer to Query_T
@@ -572,9 +591,35 @@ package body Tokenizer is
       return Result;
    end Encode;
 
-   --  function Decode (Tokens: Query_T) return String is
-   --  begin
-   --  end Decode;
+   function Decode_Token (Token : Token_T) return String is
+   begin
+      return Token_Lookup (Token);
+   end Decode_Token;
+
+   function Decode_String (Count : Natural) return String is
+      Result : String (1 .. Count) := [1 => '"', others => '#'];
+   begin
+      Result (Result'Last) := '"';
+      return Result;
+   end Decode_String;
+
+   function Decode (Tokens : Query_T) return String is
+      Buffer : Unbounded_String;
+      Str_Len : Natural := 0;
+   begin
+      for Token of Tokens loop
+         if Token = Str_Tok then
+            Str_Len := @ + 1;
+         else
+            if Str_Len /= 0 then
+               Append (Buffer, Decode_String (Str_Len));
+               Str_Len := 0;
+            end if;
+            Append (Buffer, Decode_Token (Token));
+         end if;
+      end loop;
+      return To_String (Buffer);
+   end Decode;
 
    --  function Join (First, Last : Query_T) return Query_T is
    --  begin
